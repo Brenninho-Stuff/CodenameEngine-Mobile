@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 	<app
-		title="Friday Night Funkin' - Codename Engine" main="funkin.backend.system.Main"
+		title="FNF: Codename Engine" main="funkin.backend.system.Main"
 		file="CodenameEngine" packageName="com.yoshman29.codenameengine"
 		package="com.yoshman29.codenameengine"
 		version="1.0.1" company="Yoshman29" />
@@ -140,6 +140,9 @@
 	<haxelib name="hxdiscord_rpc" if="DISCORD_RPC"/>
 	<haxelib name="markdown" />
 	<haxelib name="hxcpp-debug-server" if="TEST_BUILD debug" />
+
+	<!-- Android-specific libraries -->
+	<haxelib name="extension-androidtools" if="android" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
