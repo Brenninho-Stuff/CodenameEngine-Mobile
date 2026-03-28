@@ -28,8 +28,6 @@ jobs:
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
-      - name: Cloning extension-androidtools
-        run: git clone https://github.com/MAJigsaw77/extension-androidtools.git /tmp/extension-androidtools
       - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4.2.3
         with:
@@ -48,7 +46,12 @@ jobs:
         run: |
           haxelib install hxjava --quiet
           haxelib install hxcpp --quiet
+          git clone https://github.com/MAJigsaw77/extension-androidtools.git /tmp/extension-androidtools
           haxelib dev extension-androidtools /tmp/extension-androidtools
+      - name: Patching project.xml for Android
+        run: |
+          grep -q "extension-androidtools" project.xml || \
+          sed -i 's|<haxelib name="markdown" />|<haxelib name="markdown" />\n\t<haxelib name="extension-androidtools" if="android" />|' project.xml
       - name: Configuring Lime for Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
@@ -123,8 +126,6 @@ jobs:
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
-      - name: Cloning extension-androidtools
-        run: git clone https://github.com/MAJigsaw77/extension-androidtools.git /tmp/extension-androidtools
       - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4.2.3
         with:
@@ -143,7 +144,12 @@ jobs:
         run: |
           haxelib install hxjava --quiet
           haxelib install hxcpp --quiet
+          git clone https://github.com/MAJigsaw77/extension-androidtools.git /tmp/extension-androidtools
           haxelib dev extension-androidtools /tmp/extension-androidtools
+      - name: Patching project.xml for Android
+        run: |
+          grep -q "extension-androidtools" project.xml || \
+          sed -i 's|<haxelib name="markdown" />|<haxelib name="markdown" />\n\t<haxelib name="extension-androidtools" if="android" />|' project.xml
       - name: Configuring Lime for Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
