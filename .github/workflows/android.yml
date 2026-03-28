@@ -33,10 +33,10 @@ jobs:
       - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4.2.3
         with:
+          # not caching .haxelib/ to prevent stale hxcpp from being restored
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-android-ndk25
           path: |
-            .haxelib/
             export/release/android/haxe/
             export/release/android/obj/
       - run: |
@@ -45,7 +45,6 @@ jobs:
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s --no-vscheck
       - name: Installing Android-specific Haxe libraries
-        # install AFTER setup so hxcpp isn't overwritten by an older version
         run: |
           haxelib install hxjava --quiet
           haxelib install hxcpp --quiet
@@ -100,7 +99,6 @@ jobs:
           # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-android-ndk25
           path: |
-            .haxelib/
             export/release/android/haxe/
             export/release/android/obj/
 
@@ -132,10 +130,10 @@ jobs:
       - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4.2.3
         with:
+          # not caching .haxelib/ to prevent stale hxcpp from being restored
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-android-debug-ndk25
           path: |
-            .haxelib/
             export/debug/android/haxe/
             export/debug/android/obj/
       - run: |
@@ -193,6 +191,5 @@ jobs:
           # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-android-debug-ndk25
           path: |
-            .haxelib/
             export/debug/android/haxe/
             export/debug/android/obj/
