@@ -42,6 +42,10 @@ jobs:
       - name: Installing/Updating libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s --no-vscheck
+      - name: Installing Android-specific Haxe libraries
+        run: |
+          haxelib install hxjava --quiet
+          haxelib install hxcpp --quiet
       - name: Configuring Lime for Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
@@ -129,6 +133,10 @@ jobs:
       - name: Installing/Updating libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s --no-vscheck
+      - name: Installing Android-specific Haxe libraries
+        run: |
+          haxelib install hxjava --quiet
+          haxelib install hxcpp --quiet
       - name: Configuring Lime for Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
