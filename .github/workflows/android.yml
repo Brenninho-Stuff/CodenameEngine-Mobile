@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v4.2.3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-android
+          key: cache-build-android-ndk25
           path: |
             .haxelib/
             export/release/android/haxe/
@@ -84,7 +84,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-android") {
+              if (cache.key == "cache-build-android-ndk25") {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -98,7 +98,7 @@ jobs:
         uses: actions/cache@v4.2.3
         with:
           # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-android
+          key: cache-build-android-ndk25
           path: |
             .haxelib/
             export/release/android/haxe/
@@ -133,7 +133,7 @@ jobs:
         uses: actions/cache@v4.2.3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-android-debug
+          key: cache-build-android-debug-ndk25
           path: |
             .haxelib/
             export/debug/android/haxe/
@@ -177,7 +177,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-android-debug") {
+              if (cache.key == "cache-build-android-debug-ndk25") {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -191,7 +191,7 @@ jobs:
         uses: actions/cache@v4.2.3
         with:
           # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-android-debug
+          key: cache-build-android-debug-ndk25
           path: |
             .haxelib/
             export/debug/android/haxe/
