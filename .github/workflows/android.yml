@@ -45,7 +45,7 @@ jobs:
       - name: Installing Android-specific Haxe libraries
         run: |
           haxelib install hxjava --quiet
-          haxelib install hxcpp --quiet
+          haxelib install hxcpp 4.3.2 --quiet
           git clone https://github.com/MAJigsaw77/extension-androidtools.git /tmp/extension-androidtools
           haxelib dev extension-androidtools /tmp/extension-androidtools
       - name: Patching project.xml for Android
@@ -143,7 +143,7 @@ jobs:
       - name: Installing Android-specific Haxe libraries
         run: |
           haxelib install hxjava --quiet
-          haxelib install hxcpp --quiet
+          haxelib install hxcpp 4.3.2 --quiet
           git clone https://github.com/MAJigsaw77/extension-androidtools.git /tmp/extension-androidtools
           haxelib dev extension-androidtools /tmp/extension-androidtools
       - name: Patching project.xml for Android
