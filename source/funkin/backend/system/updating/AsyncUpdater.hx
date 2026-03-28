@@ -29,14 +29,16 @@ class AsyncUpdater {
 	#if windows
 	public static var executableGitHubName:String = "update-windows.exe";
 	public static var executableName:String = "CodenameEngine.exe";
-	#end
-	#if linux
+	#elseif linux
 	public static var executableGitHubName:String = "update-linux";
 	public static var executableName:String = "CodenameEngine";
-	#end
-	#if mac
+	#elseif mac
 	public static var executableGitHubName:String = "update-mac";
 	public static var executableName:String = "CodenameEngine";
+	#else
+	// Android and other platforms: no self-updating executable
+	public static var executableGitHubName:String = "";
+	public static var executableName:String = "";
 	#end
 
 	public var releases:Array<GitHubRelease>;
@@ -67,6 +69,7 @@ class AsyncUpdater {
 			ZipUtil.uncompressZip(reader, './', null, progress.curZipProgress);
 			// FileSystem.deleteFile(path);
 		}
+		#if !android
 		if (executableReplaced = FileSystem.exists('$path$executableName')) {
 			progress.curFile = files.length;
 			progress.curFileName = executableName;
@@ -78,6 +81,7 @@ class AsyncUpdater {
 			FileSystem.rename(progPath, bakFile);
 			FileSystem.rename('$path$executableName', progPath);
 		}
+		#end
 	}
 
 	public function downloadFiles() {
@@ -89,7 +93,7 @@ class AsyncUpdater {
 				if (e.name.toLowerCase() == "update-assets.zip") {
 					files.push(e.browser_download_url);
 					fileNames.push('${Path.withoutExtension(e.name)}-${r.tag_name}.${Path.extension(e.name)}');
-				} else if (e.name.toLowerCase() == executableGitHubName) {
+				} else if (executableGitHubName != "" && e.name.toLowerCase() == executableGitHubName) {
 					exePath = e.browser_download_url;
 				}
 			}
@@ -100,6 +104,12 @@ class AsyncUpdater {
 		progress.step = DOWNLOADING_ASSETS;
 		trace('starting assets download');
 		doFile(files.copy(), fileNames.copy(), function() {
+			#if android
+			// Android: no executable to download, go straight to install
+			trace('done, starting installation');
+			installFiles(fileNames);
+			progress.done = true;
+			#else
 			progress.curFile = -1;
 			progress.curFileName = null;
 			progress.files = 1;
@@ -110,6 +120,7 @@ class AsyncUpdater {
 				installFiles(fileNames);
 				progress.done = true;
 			});
+			#end
 		});
 	}
 
@@ -161,6 +172,8 @@ class AsyncUpdater {
 
 		#if windows
 		path = '${Sys.getEnv("TEMP")}\\Codename Engine\\Updater\\';
+		#elseif android
+		path = '${lime.system.System.applicationStorageDirectory}.temp/';
 		#else
 		path = '.temp/';
 		#end
